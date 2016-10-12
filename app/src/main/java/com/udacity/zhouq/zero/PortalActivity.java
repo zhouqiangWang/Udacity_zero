@@ -20,8 +20,22 @@ public class PortalActivity extends AppCompatActivity {
   }
   View.OnClickListener btnClickListener = new View.OnClickListener() {
     @Override public void onClick(View view) {
-      String message = String.format(getString(R.string.toast_description), ((Button)view).getText().toString());
-      Toast.makeText(PortalActivity.this, message, Toast.LENGTH_LONG).show();
+      String btnDescription = "";
+      if(view instanceof Button){
+        btnDescription = ((Button)view).getText().toString();
+      }
+      String message = String.format(getString(R.string.toast_description), btnDescription);
+      showToast(message);
     }
   };
+
+  private static  Toast mToast = null;
+  private void showToast(String msg){
+    if(mToast==null){
+      mToast = Toast.makeText(this, msg, Toast.LENGTH_LONG);
+    }else {
+      mToast.setText(msg);
+    }
+    mToast.show();
+  }
 }
