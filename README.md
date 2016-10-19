@@ -3,8 +3,8 @@
 This is repository for Android development class in Udacity.
 
 |-- portal : class 0
- 
- -- popmovies : project 1 - Popular Movies 
+
+|-- popmovies : project 1 - Popular Movies 
  
 #### 1. Popular Movies
 This project is developped using [themoviedb.org API](https://www.themoviedb.org) 
