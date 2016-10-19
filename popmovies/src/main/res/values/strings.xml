@@ -1,0 +1,10 @@
+<resources>
+  <string name="app_name">Pop Movies</string>
+  <string name="settings_sort_pop">Popular</string>
+  <string name="settings_sort_rated">Top rated</string>
+
+  <string name="title_fragment_detail">MovieDetail</string>
+
+  <string name="vote_average">%s / 10</string>
+  <string name="run_time">%smin</string>
+</resources>

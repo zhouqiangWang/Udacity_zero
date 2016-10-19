@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<android.support.design.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:fitsSystemWindows="true"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.udacity.zhouq.popmovies.MainActivity">
+
+  <android.support.design.widget.AppBarLayout
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:theme="@style/AppTheme.AppBarOverlay">
+
+  <android.support.v7.widget.Toolbar
+      android:id="@+id/toolbar"
+      android:layout_width="match_parent"
+      android:layout_height="?attr/actionBarSize"
+      android:background="?attr/colorPrimary"
+      app:popupTheme="@style/AppTheme.PopupOverlay"/>
+  </android.support.design.widget.AppBarLayout>
+
+  <android.support.v7.widget.RecyclerView
+      android:id="@+id/list"
+      android:name="com.udacity.zhouq.popmovies.ItemFragment"
+      android:layout_width="match_parent"
+      android:layout_height="match_parent"
+      android:scrollbars="vertical"
+      android:scrollbarStyle="outsideOverlay"
+      android:scrollbarTrackVertical="@android:color/white"
+      android:scrollbarThumbVertical="@color/colorAccent"
+      android:scrollbarSize="4dp"
+      app:layoutManager="LinearLayoutManager"
+      android:layout_marginTop="?attr/actionBarSize"
+      tools:context="com.udacity.zhouq.popmovies.fragment.MovieListFragment"
+      />
+
+</android.support.design.widget.CoordinatorLayout>
+
+
