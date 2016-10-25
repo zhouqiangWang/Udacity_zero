@@ -16,6 +16,8 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.Spinner;
 import com.android.volley.Request;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
@@ -24,7 +26,6 @@ import com.udacity.zhouq.popmovies.adapter.MovieItem;
 import com.udacity.zhouq.popmovies.adapter.NetworkUtils;
 import com.udacity.zhouq.popmovies.adapter.RecyclerOneImageAdapter;
 import java.util.ArrayList;
-import java.util.List;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -41,7 +42,10 @@ public class MovieListFragment extends Fragment {
 
   private OnListFragmentInteractionListener mListener;
 
-  private List<MovieItem> mData;
+  private ArrayList<MovieItem> mData;
+  private final String KEY_DATA = "data";
+  private boolean needLoad = true;
+  private final String KEY_NEED_LOAD = "need_load";
   private RecyclerView.Adapter mAdapter;
   private String mLanguage = NetworkUtils.TMDB_LANGUAGE_ZH;
   private String mCategory;
@@ -59,6 +63,7 @@ public class MovieListFragment extends Fragment {
    */
   public MovieListFragment() {
     mData = new ArrayList<>();
+    needLoad = true;
   }
 
   @Override public void onAttach(Context context) {
@@ -73,9 +78,21 @@ public class MovieListFragment extends Fragment {
 
   @Override public void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
+    if(savedInstanceState != null){
+      needLoad = savedInstanceState.getBoolean(KEY_NEED_LOAD);
+      mData = savedInstanceState.getParcelableArrayList(KEY_DATA);
+    }
     setHasOptionsMenu(true);
 
-    fetchNewCategoryMovieList(NetworkUtils.TMDB_CATEGORY_POP);
+    if(needLoad) {
+      fetchNewCategoryMovieList(NetworkUtils.TMDB_CATEGORY_POP);
+    }
+  }
+
+  @Override public void onSaveInstanceState(Bundle outState) {
+    outState.putBoolean(KEY_NEED_LOAD, needLoad);
+    outState.putParcelableArrayList(KEY_DATA, mData);
+    super.onSaveInstanceState(outState);
   }
 
   private void fetchNewCategoryMovieList(String category){
@@ -119,6 +136,7 @@ public class MovieListFragment extends Fragment {
             }
             mAdapter.notifyDataSetChanged();
             isLoading = false;
+            needLoad = false;
           }
         }, new com.android.volley.Response.ErrorListener() {
       @Override public void onErrorResponse(VolleyError error) {
@@ -134,6 +152,24 @@ public class MovieListFragment extends Fragment {
 
     Toolbar toolbar = (Toolbar) view.findViewById(R.id.toolbar);
     ((AppCompatActivity)getActivity()).setSupportActionBar(toolbar);
+    Spinner category = (Spinner) view.findViewById(R.id.category_spinner);
+    category.setOnItemSelectedListener( new AdapterView.OnItemSelectedListener() {
+      @Override
+      public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+        switch (position){
+          case 0:
+            fetchNewCategoryMovieList(NetworkUtils.TMDB_CATEGORY_POP);
+            break;
+          case 1:
+            fetchNewCategoryMovieList(NetworkUtils.TMDB_CATEGORY_TOP_RATED);
+            break;
+        }
+      }
+
+      @Override public void onNothingSelected(AdapterView<?> parent) {
+
+      }
+    });
 
     View recycler = view.findViewById(R.id.list);
     // Set the adapter
@@ -205,9 +241,9 @@ public class MovieListFragment extends Fragment {
   }
 
   @Override public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-    mMenu = menu;
-    inflater.inflate(R.menu.menu_main, menu);
-    super.onCreateOptionsMenu(menu, inflater);
+    //mMenu = menu;
+    //inflater.inflate(R.menu.menu_main, menu);
+    //super.onCreateOptionsMenu(menu, inflater);
   }
 
   @Override public boolean onOptionsItemSelected(MenuItem item) {
@@ -217,25 +253,13 @@ public class MovieListFragment extends Fragment {
     switch (id){
       case R.id.sort_pop:
         fetchNewCategoryMovieList(NetworkUtils.TMDB_CATEGORY_POP);
-        for(int i = 0; i<mMenu.size(); i++){
-          MenuItem tmp = mMenu.getItem(i);
-          if(tmp.getItemId() == R.id.sort_pop){
-            tmp.setVisible(false);
-          }else if(tmp.getItemId() == R.id.sort_rated){
-            tmp.setVisible(true);
-          }
-        }
+        mMenu.findItem(R.id.sort_rated).setVisible(true);
+        mMenu.findItem(R.id.sort_pop).setVisible(false);
         return true;
       case R.id.sort_rated:
         fetchNewCategoryMovieList(NetworkUtils.TMDB_CATEGORY_TOP_RATED);
-        for(int i = 0; i<mMenu.size(); i++){
-          MenuItem tmp = mMenu.getItem(i);
-          if(tmp.getItemId() == R.id.sort_rated){
-            tmp.setVisible(false);
-          }else if(tmp.getItemId() == R.id.sort_pop){
-            tmp.setVisible(true);
-          }
-        }
+        mMenu.findItem(R.id.sort_rated).setVisible(false);
+        mMenu.findItem(R.id.sort_pop).setVisible(true);
         return true;
     }
 

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<set xmlns:android="http://schemas.android.com/apk/res/android">
+  <objectAnimator
+    android:valueFrom="@android:color/white"
+    android:valueTo="@color/colorPrimaryDark"
+    android:propertyName="fillColor"
+    android:valueType="colorType"
+    android:duration="600" />
+
+  <objectAnimator android:duration="1000"
+    android:valueFrom="1"
+    android:valueTo="3"
+    android:propertyName="strokeWidth"
+    android:valueType="floatType" />
+</set>

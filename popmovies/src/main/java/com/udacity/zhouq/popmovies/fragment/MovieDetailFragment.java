@@ -1,16 +1,18 @@
 package com.udacity.zhouq.popmovies.fragment;
 
 import android.content.Context;
+import android.graphics.drawable.Animatable;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 import com.android.volley.Request;
 import com.android.volley.Response;
@@ -41,6 +43,8 @@ public class MovieDetailFragment extends Fragment {
   private MovieItem mItem;
 
   private OnFragmentInteractionListener mListener;
+
+  boolean isFavorite = false;
 
   public MovieDetailFragment() {
     // Required empty public constructor
@@ -96,6 +100,32 @@ public class MovieDetailFragment extends Fragment {
     tvVoteRates.setText(String.format(getString(R.string.vote_average), mItem.voteRates));
     TextView overView = (TextView) root.findViewById(R.id.over_view);
     overView.setText(mItem.overview);
+
+    ImageView favoriteImage = (ImageView) root.findViewById(R.id.btn_favorite_img);
+    //Drawable drawable = imageButton.getDrawable();
+    //if(drawable!=null && drawable instanceof Animatable){
+    //  ((Animatable)drawable).start();
+    //}
+
+    favoriteImage.setOnClickListener(new View.OnClickListener() {
+      @Override public void onClick(View v) {
+        if (v instanceof ImageView){
+          ImageView imageView = (ImageView)v;
+          if (isFavorite) {
+            imageView.setImageResource(R.drawable.animated_favorite_disable);
+          } else {
+            imageView.setImageResource(R.drawable.animated_favorite_enable);
+          }
+          isFavorite = !isFavorite;
+          Drawable drawable = ((ImageView)v).getDrawable();
+          if(drawable!=null && drawable instanceof Animatable){
+            ((Animatable)drawable).start();
+          }
+        }
+
+      }
+    });
+
     final TextView tvRuntime = (TextView) root.findViewById(R.id.runtime);
 
     String url = NetworkUtils.getInstance(getContext()).buildURLWithMovieID(mItem.id);

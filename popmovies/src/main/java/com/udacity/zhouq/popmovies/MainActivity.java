@@ -53,7 +53,7 @@ public class MainActivity extends AppCompatActivity implements MovieListFragment
   }
 
   @Override public void onListFragmentInteraction(MovieItem item) {
-    Toast.makeText(this, item.title+" is clicked!", Toast.LENGTH_LONG).show();
+    //Toast.makeText(this, item.title+" is clicked!", Toast.LENGTH_LONG).show();
 
     FragmentManager fm = getSupportFragmentManager();
     Fragment detailFragment = fm.findFragmentByTag(FRAGMENT_TAG_DETAIL);

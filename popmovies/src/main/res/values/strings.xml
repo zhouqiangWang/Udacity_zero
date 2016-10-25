@@ -7,4 +7,10 @@
 
   <string name="vote_average">%s / 10</string>
   <string name="run_time">%smin</string>
+  <string name="button_mark_favorite">MARK AS FAVORITE</string>
+  <string name="runtime_default_dash">-</string>
+  <array name="array_category">
+    <item>Popular</item>
+    <item>Top rated</item>
+  </array>
 </resources>
